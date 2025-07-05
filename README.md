@@ -6,11 +6,11 @@ A common motivating example is a [**stack**](https://en.wikipedia.org/wiki/Stack
 
 ## How it used to be done
 
-Before Go 1.18, developers eighter implementet the same functionality for multiple datatypes or used `interface{}` for generic behavior.
+Before Go 1.18, developers either implemented the same functionality for multiple data types or used `interface{}` for generic behavior.
 
 ### Type specific
 
-The simplest way to create a stack that can use differnt types is to implement it for each type.
+The simplest way to create a stack that can use different types is to implement it for each type.
 
 ```go
 // int stack structure
@@ -44,12 +44,12 @@ func (s *StringStack) Push(item string) {
 }
 ```
 
-The problem is that it does not work for any type but only for the implememtet ones.
+The problem is that it does not work for any type but only for the implemented ones.
 And it creates a lot of code duplication.
 
 ### `interface{}`
 
-Using `interface{}` the code duplication can be minimised and it accepts any possible type.
+Using `interface{}` the code duplication can be minimized and it accepts any possible type.
 
 ```go
 // stack structure
@@ -89,7 +89,8 @@ With generics, code becomes:
 - **More readable** (type is preserved),
 - **Safer** (type-checked at compile time).
 
-Go’s generics syntax introduces **type parameters** using square brackets `[]`. You define type parameters alongside types and functions to make them generic.
+Go’s generics syntax introduces **type parameters** using square brackets `[]`.
+You define type parameters alongside types and functions to make them generic.
 
 ### Structs and functions
 
@@ -140,7 +141,7 @@ func NewTuple[A, B any](a A, b B) Tuple[A, B] {
 }
 ```
 
-To simplyfy the code, go is able to infer the type arguments from the types of the function arguments.
+To simplify the code, Go is able to infer the type arguments from the types of the function arguments.
 
 ```go
 pair1 := NewTuple[string, int]("ModSoft", 2025) // explicity declared
@@ -149,7 +150,8 @@ pair2 := NewTuple("ModSoft", 2025)              // infered from arguments
 
 ### With Type Requirements
 
-You can **constrain type parameters** using interfaces (also known as "type sets"). This limits what operations are valid for a generic type.
+You can constrain type parameters using interfaces (also known as "type sets").
+This limits what operations are valid for a generic type.
 
 ```go
 type Ordered interface {
@@ -182,9 +184,14 @@ A `Stack[T]` is the perfect generic structure:
 - All operations (push, pop, peek) are type-agnostic.
 - Using `Stack[int]` vs. `Stack[string]` ensures type consistency at compile time.
 
+## Example
+
+In the example code (`main.go`) generics are the only way to implement the wanted functionality in an efficient and type-safe way.
+The code features comments explaining why.
+
 ## Summary
 
-Generics in Go allow to write clean, reusable, and type-safe code.
+Generics in Go allow you to write clean, reusable, and type-safe code.
 
-When writing data structures and functions that repeat across types it is best to use generics or interfaces.
+When writing data structures and functions that repeat across types, it is best to use generics or interfaces.
 Use generics when the logic is the same, and use interfaces when the behavior (methods) is the focus.
