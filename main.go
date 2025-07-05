@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/juli-99/hka-modell_basierte_software/stack"
+	"github.com/juli-99/hka-modell_basierte_software/queue"
 )
 
 const NUM_WORKERS int = 3
@@ -35,9 +35,9 @@ func worker[T any](
 
 func main() {
 	// Create a stack for integers
-	stack_int := stack.New[int]()
+	queue_int := queue.New[int]()
 	for i := 0; i <= NUM_INTS; i++ {
-		stack_int.Push(5 + i*7)
+		queue_int.Add(5 + i*7)
 	}
 
 	// Validation function: even numbers are valid
@@ -54,8 +54,8 @@ func main() {
 		go worker(i, ch_in_int, ch_out_int, validate_int)
 	}
 
-	for !stack_int.IsEmpty() {
-		item, _ := stack_int.Pop()
+	for !queue_int.IsEmpty() {
+		item, _ := queue_int.Next()
 		ch_in_int <- item
 		if <-ch_out_int {
 			num_valid_int++
@@ -68,10 +68,10 @@ func main() {
 	/////////////
 
 	// Create a stack for strings
-	stack_str := stack.New[string]()
-	stack_str.Push("Hello World")
-	stack_str.Push("Generics")
-	stack_str.Push("World Wide Web")
+	queue_str := queue.New[string]()
+	queue_str.Add("Hello World")
+	queue_str.Add("Generics")
+	queue_str.Add("World Wide Web")
 
 	// Validation function: string contains World
 	validate_str := func(s string) bool {
@@ -87,8 +87,8 @@ func main() {
 		go worker(i+10, ch_in_str, ch_out_str, validate_str)
 	}
 
-	for !stack_str.IsEmpty() {
-		item, _ := stack_str.Pop()
+	for !queue_str.IsEmpty() {
+		item, _ := queue_str.Next()
 		ch_in_str <- item
 		if <-ch_out_str {
 			num_valid_str++
