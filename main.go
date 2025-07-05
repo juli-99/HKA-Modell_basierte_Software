@@ -64,8 +64,7 @@ func main() {
 	close(ch_in_int)
 	fmt.Printf("Number of valid items: %d\n", num_valid_int)
 
-	time.Sleep(2 * time.Second) // sleep for 10 seconds
-	/////////////
+	time.Sleep(2 * time.Second) // sleep for 2 seconds
 
 	// Create a stack for strings
 	queue_str := queue.New[string]()
