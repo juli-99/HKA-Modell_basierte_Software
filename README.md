@@ -195,3 +195,9 @@ Generics in Go allow you to write clean, reusable, and type-safe code.
 
 When writing data structures and functions that repeat across types, it is best to use generics or interfaces.
 Use generics when the logic is the same, and use interfaces when the behavior (methods) is the focus.
+
+For more information, see these official resources:
+
+- [Tutorial: Getting started with generics](https://go.dev/doc/tutorial/generics)
+- [Blog: When To Use Generics](https://go.dev/blog/when-generics)
+- [Generics in the Go spec](https://go.dev/ref/spec#Type_parameter_declarations)
