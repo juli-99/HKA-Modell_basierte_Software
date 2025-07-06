@@ -170,19 +170,61 @@ Now, `Max` works only for types that support the `>` operator.
 
 ## When to Use
 
-Use generics when:
+Generics should be used when they improve code clarity, reduce duplication, and ensure type safety. The most effective use cases typically follow one simple guideline:
 
-- The same logic is duplicated across types (e.g., copy-paste of stack code for `int`, `string`, etc.).
-- The function/struct does **not depend on specific behavior** (e.g., no required methods).
-- **Compile-time safety** is needed for reusable logic.
+> If you find yourself **writing the same code multiple times** for different types, consider using a type parameter.
 
-### Stack Example Use Case
+### Functions working with built-in containers (slices, maps, channels)
 
-A `Stack[T]` is the perfect generic structure:
+When writing functions that operate on slices, maps, or channels without making assumptions about the types of the elements, generics can make the code reusable and type-safe.
+
+For example, instead of duplicating logic for `[]int` and `[]string`, following code can be writen:
+
+```go
+func MapKeys[K comparable, V any](m map[K]V) []K {
+    keys := make([]K, 0, len(m))
+    for k := range m {
+        keys = append(keys, k)
+    }
+    return keys
+}
+```
+
+This function works for any map type, with compile-time checks and no reflection.
+
+### General-purpose data structure
+
+A `Stack[T]` is the perfect example for a generic structure:
 
 - It does not care about methods on `T`.
 - All operations (push, pop, peek) are type-agnostic.
-- Using `Stack[int]` vs. `Stack[string]` ensures type consistency at compile time.
+- Using `Stack[int]` vs. `Stack[string]` ensures type consistency/safty at compile time.
+
+### Methods that are identical for all types
+
+When implementing a method like `Swap`, `Length`, or `Less` that behaves the same way for all slice types, generics are ideal.
+
+```go
+type SliceFn[T any] struct {
+    s    []T
+    less func(T, T) bool
+}
+
+func (s SliceFn[T]) Swap(i, j int) {
+    s.s[i], s.s[j] = s.s[j], s.s[i]
+}
+```
+
+This is especially useful when implementing interfaces like `sort.Interface` with different types.
+
+### Ensuring consistent type usage between inputs and outputs
+
+Another case is when a function needs to accept and return the same type—without knowing which one ahead of time. This allows Go to infer types automatically and reduce the need for boilerplate.
+
+### Do not use when
+
+- Interfaces are enough to provide needed flexibility.
+- Method implementations differ based on type.
 
 ## Example
 
